@@ -1,0 +1,5 @@
+^\.github$
+^README\.md$
+^DESIGN\.md$
+^LICENSE\.md$
+^\.gitignore$

@@ -1,0 +1,83 @@
+---
+title: "Moment constraints and principal representations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Moment constraints and principal representations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(principalMoments)
+```
+
+The first `v` moments generally leave many compatible distributions. The two
+principal representations are special finite distributions matching those
+moments. Their nodes and weights depend on the moments, not on the integrand.
+
+```{r}
+m <- 1 / (2:4) # Uniform(0,1) moments
+reps <- principal_representations(m)
+reps$lower
+reps$upper
+reps$diagnostics
+```
+
+For odd `v = 2n-1`, these are Gauss and Lobatto rules. For even `v = 2n`,
+they are left and right Radau rules. For feasible boundary moments, both
+representations coincide with the unique compatible distribution.
+
+```{r}
+principal_representations(c(0.3, 0.09))$lower # point mass at 0.3
+principal_representations(c(0.3, 0.3))$upper # Bernoulli distribution
+```
+
+For a continuous integrand whose derivative of order `v+1` is nonnegative,
+the lower rule minimises its expectation and the upper maximises it among
+all compatible distributions. Negative derivative sign reverses the roles.
+The caller must establish this condition: it is not numerically tested.
+
+```{r}
+functional_bounds(reps, exp, derivative = "positive")
+# The actual expectation under Uniform(0,1) lies between these values:
+exp(1) - 1
+```
+
+In clustered group testing, write `Q = 1 - (1-P)^s` for the probability of a
+positive pool at a location. Observing the count law for `v` pools identifies
+the first `v` moments of `Q`. Marginal individual prevalence is
+`E[1 - (1-Q)^(1/s)]`. For `s > 1`, the required derivatives are positive on
+`(0,1)` and the integrand is continuous on `[0,1]`. Endpoint derivatives need
+not be finite for this application of the Chebyshev-system condition.
+
+```{r}
+f <- function(q, s) -expm1(log1p(-q) / s)
+functional_bounds(reps, f, s = 25, derivative = "positive")
+```
+
+For other functions, evaluate without claiming extrema:
+
+```{r}
+evaluate_representations(reps, function(x) sin(10 * x))
+evaluate_representations(reps, function(nodes, weights) {
+  sum(weights * nodes^2) - sum(weights * nodes)^2
+}, type = "distribution")
+```
+
+General support intervals require raw moments on that same interval:
+
+```{r}
+# Uniform(-1, 1): mean 0 and second moment 1/3
+principal_representations(c(0, 1/3), support = c(-1, 1))$lower
+```
+
+Raw-moment inversion is ill-conditioned for high orders or near boundary
+sequences. Inspect residuals and eigenvalue diagnostics, and assess sensitivity
+to `tol`. Residuals describe agreement with the input, not forward accuracy
+of individual nodes. The package rejects infeasible inputs and unresolved
+numerical inversion problems rather than discarding higher moments.
+
+The algorithms follow Karlin and Studden (1966), *Tchebycheff Systems*;
+Krein and Nudelman (1977), *The Markov Moment Problem and Extremal Problems*;
+and Gautschi (2004), *Orthogonal Polynomials*, Section 1.4.2.

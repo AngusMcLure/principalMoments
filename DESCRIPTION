@@ -1,0 +1,24 @@
+Package: principalMoments
+Title: Principal Representations of Truncated Moment Sequences
+Version: 0.1.0
+Authors@R: person("Angus", "McLure", email = "angus.mclure@anu.edu.au",
+    role = c("aut", "cre"))
+Description: Computes lower and upper principal representations of probability
+    distributions on a compact interval from truncated raw moment sequences.
+    Provides feasibility checks, boundary recovery, Gaussian quadrature via
+    symmetric eigenproblems, and evaluation of integrals and distribution
+    functionals. For integrands satisfying the Markov-Krein derivative-sign
+    condition, the representations give sharp moment-constrained bounds.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends: R (>= 4.1.0)
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://github.com/AngusMcLure/principalMoments
+BugReports: https://github.com/AngusMcLure/principalMoments/issues
