@@ -1,0 +1,18 @@
+Test Summary:                    | Pass  Total   Time
+Polynomial quadrature references |   36     36  17.2s
+Test Summary:                                 | Pass  Total  Time
+Solver paths reproduce 3-point Gauss-Legendre |   15     15  5.0s
+Test Summary:                       | Pass  Total   Time
+BigFloat polynomial reproducibility |   14     14  14.4s
+Test Summary:                    | Pass  Total  Time
+Smooth non-polynomial quadrature |    6      6  0.2s
+Test Summary:                                   | Pass  Total  Time
+Orthogonalization improves a badly scaled basis |    7      7  7.6s
+Test Summary:                | Pass  Total  Time
+T-system and ECT diagnostics |   14     14  5.6s
+Test Summary:                   | Pass  Total  Time
+Public quadrature API contracts |   34     34  4.6s
+Test Summary:                | Pass  Total  Time
+Orthogonalization invariants |   12     12  3.0s
+Test Summary:                         | Pass  Total  Time
+Orthogonalization derivative handling |   17     17  1.0s

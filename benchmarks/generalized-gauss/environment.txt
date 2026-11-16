@@ -1,0 +1,21 @@
+Julia Version 1.11.7
+Commit f2b3dbda30a (2025-09-08 12:10 UTC)
+Build Info:
+  Official https://julialang.org/ release
+Platform Info:
+  OS: Linux (x86_64-linux-gnu)
+  CPU: 3 × AMD EPYC 9V74 80-Core Processor
+  WORD_SIZE: 64
+  LLVM: libLLVM-16.0.6 (ORCJIT, znver4)
+Threads: 1 default, 0 interactive, 1 GC (on 3 virtual cores)
+Environment:
+  JULIA_DEPOT_PATH = /workspace/work/generalized-review/julia-depot
+Project GeneralizedGauss v0.1.0
+Status `/workspace/work/generalized-review/extension/Project.toml`
+  [4343a256] BasisFunctions v0.7.9
+⌅ [5b8099bc] DomainSets v0.7.18
+⌅ [2774e3e8] NLsolve v4.5.1
+⌅ [02130f1c] NOMAD v2.4.2
+  [37e2e46d] LinearAlgebra v1.11.0
+  [9a3f8284] Random v1.11.0
+Info Packages marked with ⌅ have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated`
