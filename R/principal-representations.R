@@ -158,6 +158,9 @@ localising_matrices <- function(m) {
 # Golub-Welsch in a Cholesky-orthonormalised monomial basis.
 # This avoids polynomial roots and Vandermonde solves for interior sequences.
 gaussian_rule <- function(m, n) {
+  # Avoid an unnecessary Cholesky/eigen round trip for a one-node rule.
+  # A one-ulp node error near one is amplified by endpoint-singular integrands.
+  if (n == 1L) return(list(nodes = m[2] / m[1], weights = m[1]))
   h <- moment_matrix(m, n)
   h1 <- moment_matrix(m, n, 1L)
   inverse <- tryCatch(backsolve(chol(h), diag(n)),
