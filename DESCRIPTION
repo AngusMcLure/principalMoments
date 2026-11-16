@@ -1,10 +1,11 @@
 Package: principalMoments
 Title: Principal Representations of Truncated Moment Sequences
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Angus", "McLure", email = "angus.mclure@anu.edu.au",
     role = c("aut", "cre"))
 Description: Computes lower and upper principal representations of probability
-    distributions on a compact interval from truncated raw moment sequences.
+    distributions from consecutive raw moments on a compact interval or
+    selected power moments on the unit interval.
     Provides feasibility checks, boundary recovery, Gaussian quadrature via
     symmetric eigenproblems, and evaluation of integrals and distribution
     functionals. For integrands satisfying the Markov-Krein derivative-sign

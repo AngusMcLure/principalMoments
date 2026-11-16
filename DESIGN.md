@@ -89,3 +89,33 @@ without requiring Python. No claim of formal numerical certification is made.
 5. General integrand optimisation via polynomial envelopes as a separate API.
 
 These extensions are not implemented in version 0.1.0.
+
+## Selected-monomial extension
+
+`generalised_principal_representations(moments, orders)` solves the power
+Chebyshev-system problem on [0,1]. The input orders exclude zero and must be
+strictly increasing and positive; fractional orders are permitted. Work in
+Y=X^orders[1] so all differentiated powers are at least one. Arithmetic order
+sequences dispatch to the existing solver, with nodes transformed back.
+Otherwise the number of unknown weights and unfixed nodes is d+1, matching
+the normalisation plus d supplied constraints. Fixed endpoints follow the
+principal patterns in the table, independently of the largest power.
+
+The nonlinear backend uses analytic Jacobians, SVD damped Newton directions,
+box-constrained backtracking and five deterministic initial node configurations.
+Residuals are scaled by max(target moment, 1e-4) during optimisation; final
+acceptance uses the absolute user tolerance on all moments including mass.
+Every returned measure is nonnegative and supported on [0,1]. Successful moment
+reproduction with the principal support pattern establishes compatibility;
+nonconvergence does not establish incompatibility. This is a numerical backend,
+not a general certified feasibility oracle or a high-precision implementation.
+Near singular boundaries, residual accuracy need not imply forward accuracy.
+Recognisable point masses and mixtures on {0,1} are recovered analytically.
+
+For a target exponent t, appending x^t to the ordered system has orientation
+(-1)^k where k counts supplied exponents greater than t. `power_moment_bounds`
+uses this sign, rather than the ordinary (d+1)th derivative criterion. With
+X=1-P and all pool sizes greater than one, t=1 recovers precisely the parity
+rule in the theory's mixed-pool theorem. Equal pool size s corresponds to
+orders s,2s,...,vs and Q=1-X^s. Reflection swaps the principal labels when v is
+even; bounds are compared after reversing E(X) to prevalence 1-E(X).

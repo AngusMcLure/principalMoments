@@ -93,3 +93,34 @@ and endpoint quadrature algorithms. It was inspected as a reference; this is an
 independent R implementation of classical mathematical algorithms, without
 copied Python code or a Python dependency. The motivating application is
 [clustered group testing](https://github.com/AngusMcLure/MX-PVS-sample-size/blob/clustered-group-testing-theory/clustered-group-testing-theory.Rmd).
+
+## Selected powers and mixed pool sizes
+
+`principal_representations()` interprets its input as consecutive raw moments.
+For selected positive real orders on `[0,1]`, use the separate API:
+
+```r
+# One size-2 pool and one size-3 pool identify E(X^2), E(X^3), E(X^5),
+# where X = 1-P. Here the example moments come from Uniform(0,1).
+r <- generalised_principal_representations(1 / c(3, 4, 6), c(2, 3, 5))
+r$lower
+r$upper
+b <- power_moment_bounds(r, exponent = 1)
+c(minimum = 1 - unname(b[2]), maximum = 1 - unname(b[1]))
+evaluate_representations(r, function(x) 1 - x)
+```
+
+The orientation for a target power depends on how many supplied exponents
+exceed it. `power_moment_bounds()` handles that orientation automatically;
+the ordinary derivative-sign `functional_bounds()` deliberately rejects these
+objects. Arbitrary integrands can still be evaluated, without claiming bounds.
+
+Equally spaced exponents reduce to ordinary moments by a power transformation.
+Other exponents require nonlinear quadrature equations, solved using analytic
+Jacobians, damped Newton steps, bounded parameters and deterministic restarts.
+Both output measures must reproduce every constraint. Recognisable point-mass
+and endpoint-mixture boundaries are recovered directly. Nonconvergence is
+reported explicitly; it does not prove the input infeasible. This API covers
+selected monomials, not arbitrary constraint functions or unbounded support.
+It is intended for low to moderate dimensions; near boundaries, high or closely
+spaced powers can be ill-conditioned. Check residuals and tolerance sensitivity.

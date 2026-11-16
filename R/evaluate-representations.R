@@ -61,6 +61,10 @@ evaluate_representations <- function(representations, fun, ...,
 #' functional_bounds(reps, exp, derivative = "positive")
 functional_bounds <- function(representations, fun, ...,
                               derivative = c("positive", "negative")) {
+  if (inherits(representations, "generalised_principal_representations")) {
+    stop("Use power_moment_bounds() for selected powers; the ordinary derivative rule does not apply.",
+         call. = FALSE)
+  }
   if (missing(derivative)) {
     stop("Explicitly assert the derivative sign using `derivative`.", call. = FALSE)
   }
