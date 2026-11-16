@@ -226,7 +226,7 @@ precision_representations <- function(moments, orders, tol, precision, accuracy,
         } else if (consecutive) {
           mp_consecutive(c(mp_value(1, bits), m), bits)
         } else {
-          mp_selected(m, orders, bits, maxit, warm)
+          mp_selected(m, orders, bits, maxit, warm, accuracy = min(accuracy, 100 * tol))
         }
       },
       error = function(e) {
