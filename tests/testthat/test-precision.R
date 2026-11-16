@@ -132,3 +132,19 @@ test_that("working precision honours the supplied input before refinement", {
   expect_gte(reps$diagnostics$working_precision, 512)
   expect_equal(reps$diagnostics$input_precision, 512L)
 })
+
+test_that("rank guards preserve analytically recognized long boundary sequences", {
+  for (point in c(0, 0.3, 1)) {
+    reps <- principal_representations(point^(1:100))
+    expect_true(reps$boundary)
+    expect_equal(reps$lower$nodes, point)
+    expect_equal(reps$lower$weights, 1)
+    expect_equal(
+      unname(functional_bounds(reps, exp, derivative = "positive")),
+      rep(exp(point), 2)
+    )
+  }
+  reps <- principal_representations(rep(0.3, 100))
+  expect_equal(reps$lower$nodes, c(0, 1))
+  expect_equal(reps$lower$weights, c(0.7, 0.3))
+})

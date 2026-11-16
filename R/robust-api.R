@@ -35,6 +35,32 @@ principal_representations <- function(moments, support = c(0, 1), tol = 1e-12,
   validate_precision_controls(tol, precision, accuracy, max_precision)
   precise <- is.character(moments) || is_mp(moments) || !is.null(precision)
   if (!precise) {
+    # Long exact endpoint mixtures and explicitly generated point sequences
+    # need no numerical-rank decision. Keep these paths before the rank guard.
+    unit <- is.numeric(support) && !is.complex(support) && length(support) == 2L &&
+      all(is.finite(support)) && all(support == c(0, 1))
+    valid <- is.numeric(moments) && !is.complex(moments) && is.null(dim(moments)) &&
+      length(moments) > 10L && all(is.finite(moments)) && all(moments >= 0 & moments <= 1)
+    if (unit && valid) {
+      point <- all(moments == moments[1]^seq_along(moments))
+      endpoints <- all(moments == moments[1])
+      if (point || endpoints) {
+        rule <- if (point) {
+          data.frame(nodes = moments[1], weights = 1)
+        } else {
+          data.frame(nodes = c(0, 1), weights = c(1 - moments[1], moments[1]))
+        }
+        rule <- rule[rule$weights > 0, , drop = FALSE]
+        rownames(rule) <- NULL
+        return(structure(list(
+          lower = rule, upper = rule, moments = moments, support = support,
+          order = length(moments), boundary = TRUE, diagnostics = list(
+            status = "boundary_at_input_precision", residuals = c(lower = 0, upper = 0),
+            input_precision = 53L, working_precision = 53L
+          )
+        ), class = "principal_representations"))
+      }
+    }
     result <- principal_double(moments, support, tol)
     simple <- all(moments == moments[1]) ||
       all(abs(moments - moments[1]^seq_along(moments)) <=
