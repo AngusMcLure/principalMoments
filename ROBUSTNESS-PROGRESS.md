@@ -123,7 +123,8 @@ User functions must support MPFR arguments without coercing away their precision
   algorithms remain worthwhile. A 23-selected-moment exploratory fixture
   (five size-2 and five size-3 pools, 25 individuals) did not complete within
   685 elapsed seconds and was stopped. It is not counted as a successful
-  large-dimension result.
+  large-dimension result. After the accuracy-based stopping change, a repeat
+  also remained unresolved within a 240-second external timeout.
 - The input-collision example in the original report is still fundamental:
   if two distributions have the same rounded double moments, their original
   distinct prevalences cannot be reconstructed from those rounded inputs.
@@ -133,3 +134,10 @@ User functions must support MPFR arguments without coercing away their precision
 Run the ordinary checks with `rcmdcheck::rcmdcheck()`. For the extended cases,
 set `PRINCIPAL_MOMENTS_STRESS=true` when running tests, or trigger the
 **Numerical stress checks** GitHub Actions workflow manually.
+
+
+The uniform timing sweep and the difficult mixed fixture can be reproduced
+from the repository root with
+`Rscript benchmarks/robustness/precision-check.R` or, on Linux,
+`timeout 240 Rscript benchmarks/robustness/precision-check.R --mixed23`.
+The timeout is an external benchmark limit, not a convergence certificate.
