@@ -22,7 +22,10 @@ well-conditioned or certified.
   interior nodes and positive weights. Existing double fits are warm starts
   only. Otherwise continuation first changes the exponents under the uniform
   measure and then changes the moments through convex combinations approaching
-  the supplied vector. There is no clipping in the accepted precision solve.
+  the supplied vector. Very small positive parameters use logarithmic Newton
+  coordinates with a step limit. There is no clipping in the accepted precision
+  solve. Stopping uses the requested accuracy, rather than demanding gratuitous
+  digits simply because working precision is high.
 - Success requires a second working-precision calculation, stability of nodes
   and weights, absolute and relative reproduction checks, and (for numeric
   inputs on this path) a local input-sensitivity check. A bounded Newton work

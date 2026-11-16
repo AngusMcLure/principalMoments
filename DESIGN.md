@@ -137,8 +137,11 @@ fit can supply initial guesses but cannot be returned without correction.
 When necessary, continuation first moves consecutive exponents to the selected
 exponents under a uniform measure, then approaches the supplied moment vector
 through convex combinations with geometrically decreasing uniform weight.
-Both relative residuals and Newton corrections control convergence. A bounded
-work budget prevents unlimited continuation retries.
+Both relative residuals and Newton corrections control convergence, at the
+requested accuracy. Very small parameters use logarithmic Newton coordinates
+and bounded relative steps. The uniform-mixture path can continue toward
+precision-level boundary distances, with early probes for an exact target
+correction. A bounded work budget prevents unlimited continuation retries.
 
 A second working-precision calculation must reproduce the nodes and weights to
 `accuracy/10`. The final all-moment check enforces both absolute `tol` and relative

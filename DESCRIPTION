@@ -10,6 +10,7 @@ Description: Computes lower and upper principal representations of probability
     symmetric eigenproblems, and evaluation of integrals and distribution
     functionals. For integrands satisfying the Markov-Krein derivative-sign
     condition, the representations give sharp moment-constrained bounds.
+    Provides adaptive MPFR precision refinement and numerical diagnostics.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

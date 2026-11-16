@@ -140,7 +140,7 @@ mp_consecutive <- function(m, bits) {
 mp_basis <- function(orders, nodes) mp_outer(orders, nodes, function(k, x) x^k)
 
 # Newton correction with ordered support and positive weights. No clipping.
-mp_correct <- function(z, orders, target, ends, r, bits, maxit, budget = NULL) {
+mp_correct <- function(z, orders, target, ends, r, bits, maxit, budget = NULL, accuracy = 1e-8) {
   n <- length(z) - r
   scale <- abs(target)
   scale[scale == 0] <- mp_value(2, bits)^(-bits / 2)
@@ -149,7 +149,7 @@ mp_correct <- function(z, orders, target, ends, r, bits, maxit, budget = NULL) {
     x <- z[n + seq_len(r)]
     all(z[seq_len(n)] > 0) && all(x > 0 & x < 1) && all(diff(x) > 0)
   }
-  goal <- mp_value(2, bits)^(-bits * 0.6)
+  goal <- mp_value(accuracy, bits) / 100
   for (iteration in seq_len(maxit)) {
     if (!is.null(budget)) {
       budget$remaining <- budget$remaining - 1L
@@ -163,17 +163,20 @@ mp_correct <- function(z, orders, target, ends, r, bits, maxit, budget = NULL) {
     })
     for (j in seq_len(r)) derivative[, j] <- derivative[, j] * z[j]
     jac <- Rmpfr::cbind(b, derivative)
+    logarithmic <- min(z) < mp_value("1e-8", bits)
+    if (logarithmic) for (j in seq_along(z)) jac[, j] <- jac[, j] * z[j]
     step <- tryCatch(mp_solve(jac, -f), error = function(e) NULL)
     if (is.null(step)) {
       return(NULL)
     }
-    if (max(abs(f / scale)) < goal && max(abs(step)) < sqrt(goal)) {
+    if (max(abs(f / scale)) < goal && max(abs(step)) < goal) {
       return(z)
     }
     improved <- FALSE
     alpha <- mp_value(1, bits)
+    if (logarithmic && max(abs(step)) > 10) alpha <- 10 / max(abs(step))
     for (j in 1:70) {
-      candidate <- z + alpha * step
+      candidate <- if (logarithmic) z * exp(alpha * step) else z + alpha * step
       if (admissible(candidate)) {
         new_f <- methods::as(mp_basis(orders, unpack(candidate)) %*% candidate[seq_len(n)], "mpfr") - target
         if (max(abs(new_f / scale)) < max(abs(f / scale))) {
@@ -191,7 +194,7 @@ mp_correct <- function(z, orders, target, ends, r, bits, maxit, budget = NULL) {
   NULL
 }
 
-mp_selected <- function(moments, orders, bits, maxit, warm = NULL) {
+mp_selected <- function(moments, orders, bits, maxit, warm = NULL, accuracy = 1e-8) {
   d <- length(orders)
   e <- c(mp_value(0, bits), mp_value(orders, bits) / orders[1])
   target <- c(mp_value(1, bits), moments)
@@ -218,7 +221,7 @@ mp_selected <- function(moments, orders, bits, maxit, warm = NULL) {
           mp_value(candidate$weights[c(interior, endpoint)], bits),
           mp_value(candidate$nodes[interior], bits)^orders[1]
         )
-        corrected <- mp_correct(initial, e, target, ends, r, bits, min(maxit, 20L), budget)
+        corrected <- mp_correct(initial, e, target, ends, r, bits, min(maxit, 20L), budget, accuracy)
         if (!is.null(corrected)) {
           n <- length(corrected) - r
           nodes <- c(corrected[n + seq_len(r)], ends)
@@ -241,7 +244,9 @@ mp_selected <- function(moments, orders, bits, maxit, warm = NULL) {
     for (stage in 1:2) {
       t <- 0
       dt <- if (stage == 1) 0.25 else 2
-      end_t <- if (stage == 1) 1 else max(16, ceiling(mp_num(-log2(min(target[target > 0])))) + 4)
+      base_end <- max(16, ceiling(mp_num(-log2(min(target[target > 0])))) + 4)
+      end_t <- if (stage == 1) 1 else max(base_end, ceiling(bits * 0.6))
+      next_probe <- base_end
       steps <- 0L
       while (t < end_t) {
         steps <- steps + 1L
@@ -258,12 +263,20 @@ mp_selected <- function(moments, orders, bits, maxit, warm = NULL) {
         } else {
           mix / (1 + e) + (1 - mix) * target
         }
-        next_z <- mp_correct(z, exponents, wanted, ends, r, bits, maxit, budget)
+        next_z <- mp_correct(z, exponents, wanted, ends, r, bits, maxit, budget, accuracy)
         if (is.null(next_z)) {
           dt <- dt / 2
         } else {
           z <- next_z
           t <- next_t
+          if (stage == 2 && t >= next_probe && t < end_t) {
+            final_z <- mp_correct(z, e, target, ends, r, bits, min(maxit, 20L), budget, accuracy)
+            if (!is.null(final_z)) {
+              z <- final_z
+              break
+            }
+            next_probe <- t + 16
+          }
           dt <- min(if (stage == 1) 0.5 else 4, dt * 1.5)
         }
       }
