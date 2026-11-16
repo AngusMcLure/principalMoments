@@ -1,0 +1,234 @@
+id,family,label,api,d,s,pools,units,max_order,spread
+1,fixed,Q_uniform,fixed,1,25,1,25,1,1.0
+2,fixed,Q_uniform,fixed,2,25,2,50,2,2.0
+3,fixed,Q_uniform,fixed,3,25,3,75,3,3.0
+4,fixed,Q_uniform,fixed,4,25,4,100,4,4.0
+5,fixed,Q_uniform,fixed,5,25,5,125,5,5.0
+6,fixed,Q_uniform,fixed,6,25,6,150,6,6.0
+7,fixed,Q_uniform,fixed,7,25,7,175,7,7.0
+8,fixed,Q_uniform,fixed,8,25,8,200,8,8.0
+9,fixed,Q_uniform,fixed,9,25,9,225,9,9.0
+10,fixed,Q_uniform,fixed,10,25,10,250,10,10.0
+11,fixed,Q_uniform,fixed,11,25,11,275,11,11.0
+12,fixed,Q_uniform,fixed,12,25,12,300,12,12.0
+13,fixed,Q_uniform,fixed,13,25,13,325,13,13.0
+14,fixed,Q_uniform,fixed,14,25,14,350,14,14.0
+15,fixed,Q_uniform,fixed,15,25,15,375,15,15.0
+16,fixed,Q_uniform,fixed,16,25,16,400,16,16.0
+17,fixed,Q_uniform,fixed,17,25,17,425,17,17.0
+18,fixed,Q_uniform,fixed,18,25,18,450,18,18.0
+19,fixed,Q_uniform,fixed,19,25,19,475,19,19.0
+20,fixed,Q_uniform,fixed,20,25,20,500,20,20.0
+21,fixed,Q_uniform,fixed,21,25,21,525,21,21.0
+22,fixed,Q_uniform,fixed,22,25,22,550,22,22.0
+23,fixed,Q_uniform,fixed,23,25,23,575,23,23.0
+24,fixed,Q_uniform,fixed,24,25,24,600,24,24.0
+25,fixed,Q_uniform,fixed,28,25,28,700,28,28.0
+26,fixed,Q_uniform,fixed,32,25,32,800,32,32.0
+27,fixed,Q_uniform,fixed,40,25,40,1000,40,40.0
+28,fixed,Q_uniform,fixed,60,25,60,1500,60,60.0
+29,fixed,Q_uniform,fixed,100,25,100,2500,100,100.0
+30,fixed,Q_beta_2_3,fixed,1,25,1,25,1,1.0
+31,fixed,Q_beta_2_3,fixed,2,25,2,50,2,2.0
+32,fixed,Q_beta_2_3,fixed,3,25,3,75,3,3.0
+33,fixed,Q_beta_2_3,fixed,4,25,4,100,4,4.0
+34,fixed,Q_beta_2_3,fixed,5,25,5,125,5,5.0
+35,fixed,Q_beta_2_3,fixed,6,25,6,150,6,6.0
+36,fixed,Q_beta_2_3,fixed,7,25,7,175,7,7.0
+37,fixed,Q_beta_2_3,fixed,8,25,8,200,8,8.0
+38,fixed,Q_beta_2_3,fixed,9,25,9,225,9,9.0
+39,fixed,Q_beta_2_3,fixed,10,25,10,250,10,10.0
+40,fixed,Q_beta_2_3,fixed,11,25,11,275,11,11.0
+41,fixed,Q_beta_2_3,fixed,12,25,12,300,12,12.0
+42,fixed,Q_beta_2_3,fixed,13,25,13,325,13,13.0
+43,fixed,Q_beta_2_3,fixed,14,25,14,350,14,14.0
+44,fixed,Q_beta_2_3,fixed,15,25,15,375,15,15.0
+45,fixed,Q_beta_2_3,fixed,16,25,16,400,16,16.0
+46,fixed,Q_beta_2_3,fixed,17,25,17,425,17,17.0
+47,fixed,Q_beta_2_3,fixed,18,25,18,450,18,18.0
+48,fixed,Q_beta_2_3,fixed,19,25,19,475,19,19.0
+49,fixed,Q_beta_2_3,fixed,20,25,20,500,20,20.0
+50,fixed,Q_beta_2_3,fixed,21,25,21,525,21,21.0
+51,fixed,Q_beta_2_3,fixed,22,25,22,550,22,22.0
+52,fixed,Q_beta_2_3,fixed,23,25,23,575,23,23.0
+53,fixed,Q_beta_2_3,fixed,24,25,24,600,24,24.0
+54,fixed,Q_beta_2_3,fixed,28,25,28,700,28,28.0
+55,fixed,Q_beta_2_3,fixed,32,25,32,800,32,32.0
+56,fixed,Q_beta_2_3,fixed,40,25,40,1000,40,40.0
+57,fixed,Q_beta_2_3,fixed,60,25,60,1500,60,60.0
+58,fixed,Q_beta_2_3,fixed,100,25,100,2500,100,100.0
+59,fixed,Q_U_shaped,fixed,1,25,1,25,1,1.0
+60,fixed,Q_U_shaped,fixed,2,25,2,50,2,2.0
+61,fixed,Q_U_shaped,fixed,3,25,3,75,3,3.0
+62,fixed,Q_U_shaped,fixed,4,25,4,100,4,4.0
+63,fixed,Q_U_shaped,fixed,5,25,5,125,5,5.0
+64,fixed,Q_U_shaped,fixed,6,25,6,150,6,6.0
+65,fixed,Q_U_shaped,fixed,7,25,7,175,7,7.0
+66,fixed,Q_U_shaped,fixed,8,25,8,200,8,8.0
+67,fixed,Q_U_shaped,fixed,9,25,9,225,9,9.0
+68,fixed,Q_U_shaped,fixed,10,25,10,250,10,10.0
+69,fixed,Q_U_shaped,fixed,11,25,11,275,11,11.0
+70,fixed,Q_U_shaped,fixed,12,25,12,300,12,12.0
+71,fixed,Q_U_shaped,fixed,13,25,13,325,13,13.0
+72,fixed,Q_U_shaped,fixed,14,25,14,350,14,14.0
+73,fixed,Q_U_shaped,fixed,15,25,15,375,15,15.0
+74,fixed,Q_U_shaped,fixed,16,25,16,400,16,16.0
+75,fixed,Q_U_shaped,fixed,17,25,17,425,17,17.0
+76,fixed,Q_U_shaped,fixed,18,25,18,450,18,18.0
+77,fixed,Q_U_shaped,fixed,19,25,19,475,19,19.0
+78,fixed,Q_U_shaped,fixed,20,25,20,500,20,20.0
+79,fixed,Q_U_shaped,fixed,21,25,21,525,21,21.0
+80,fixed,Q_U_shaped,fixed,22,25,22,550,22,22.0
+81,fixed,Q_U_shaped,fixed,23,25,23,575,23,23.0
+82,fixed,Q_U_shaped,fixed,24,25,24,600,24,24.0
+83,fixed,Q_U_shaped,fixed,28,25,28,700,28,28.0
+84,fixed,Q_U_shaped,fixed,32,25,32,800,32,32.0
+85,fixed,Q_U_shaped,fixed,40,25,40,1000,40,40.0
+86,fixed,Q_U_shaped,fixed,60,25,60,1500,60,60.0
+87,fixed,Q_U_shaped,fixed,100,25,100,2500,100,100.0
+88,fixed,Q_rare,fixed,1,25,1,25,1,1.0
+89,fixed,Q_rare,fixed,2,25,2,50,2,2.0
+90,fixed,Q_rare,fixed,3,25,3,75,3,3.0
+91,fixed,Q_rare,fixed,4,25,4,100,4,4.0
+92,fixed,Q_rare,fixed,5,25,5,125,5,5.0
+93,fixed,Q_rare,fixed,6,25,6,150,6,6.0
+94,fixed,Q_rare,fixed,7,25,7,175,7,7.0
+95,fixed,Q_rare,fixed,8,25,8,200,8,8.0
+96,fixed,Q_rare,fixed,9,25,9,225,9,9.0
+97,fixed,Q_rare,fixed,10,25,10,250,10,10.0
+98,fixed,Q_rare,fixed,11,25,11,275,11,11.0
+99,fixed,Q_rare,fixed,12,25,12,300,12,12.0
+100,fixed,Q_rare,fixed,13,25,13,325,13,13.0
+101,fixed,Q_rare,fixed,14,25,14,350,14,14.0
+102,fixed,Q_rare,fixed,15,25,15,375,15,15.0
+103,fixed,Q_rare,fixed,16,25,16,400,16,16.0
+104,fixed,Q_rare,fixed,17,25,17,425,17,17.0
+105,fixed,Q_rare,fixed,18,25,18,450,18,18.0
+106,fixed,Q_rare,fixed,19,25,19,475,19,19.0
+107,fixed,Q_rare,fixed,20,25,20,500,20,20.0
+108,fixed,Q_rare,fixed,21,25,21,525,21,21.0
+109,fixed,Q_rare,fixed,22,25,22,550,22,22.0
+110,fixed,Q_rare,fixed,23,25,23,575,23,23.0
+111,fixed,Q_rare,fixed,24,25,24,600,24,24.0
+112,fixed,Q_rare,fixed,28,25,28,700,28,28.0
+113,fixed,Q_rare,fixed,32,25,32,800,32,32.0
+114,fixed,Q_rare,fixed,40,25,40,1000,40,40.0
+115,fixed,Q_rare,fixed,60,25,60,1500,60,60.0
+116,fixed,Q_rare,fixed,100,25,100,2500,100,100.0
+117,fixed,P_beta_p01_rho01_s25,fixed,1,25,1,25,1,1.0
+118,fixed,P_beta_p01_rho01_s25,fixed,2,25,2,50,2,2.0
+119,fixed,P_beta_p01_rho01_s25,fixed,3,25,3,75,3,3.0
+120,fixed,P_beta_p01_rho01_s25,fixed,4,25,4,100,4,4.0
+121,fixed,P_beta_p01_rho01_s25,fixed,5,25,5,125,5,5.0
+122,fixed,P_beta_p01_rho01_s25,fixed,6,25,6,150,6,6.0
+123,fixed,P_beta_p01_rho01_s25,fixed,7,25,7,175,7,7.0
+124,fixed,P_beta_p01_rho01_s25,fixed,8,25,8,200,8,8.0
+125,fixed,P_beta_p01_rho01_s25,fixed,9,25,9,225,9,9.0
+126,fixed,P_beta_p01_rho01_s25,fixed,10,25,10,250,10,10.0
+127,fixed,P_beta_p01_rho01_s25,fixed,11,25,11,275,11,11.0
+128,fixed,P_beta_p01_rho01_s25,fixed,12,25,12,300,12,12.0
+129,fixed,P_beta_p01_rho01_s25,fixed,13,25,13,325,13,13.0
+130,fixed,P_beta_p01_rho01_s25,fixed,14,25,14,350,14,14.0
+131,fixed,P_beta_p01_rho01_s25,fixed,15,25,15,375,15,15.0
+132,fixed,P_beta_p01_rho01_s25,fixed,16,25,16,400,16,16.0
+133,fixed,P_beta_p01_rho01_s25,fixed,17,25,17,425,17,17.0
+134,fixed,P_beta_p01_rho01_s25,fixed,18,25,18,450,18,18.0
+135,fixed,P_beta_p01_rho01_s25,fixed,19,25,19,475,19,19.0
+136,fixed,P_beta_p01_rho01_s25,fixed,20,25,20,500,20,20.0
+137,fixed,P_beta_p01_rho01_s25,fixed,21,25,21,525,21,21.0
+138,fixed,P_beta_p01_rho01_s25,fixed,22,25,22,550,22,22.0
+139,fixed,P_beta_p01_rho01_s25,fixed,23,25,23,575,23,23.0
+140,fixed,P_beta_p01_rho01_s25,fixed,24,25,24,600,24,24.0
+141,fixed,P_beta_p01_rho01_s25,fixed,28,25,28,700,28,28.0
+142,fixed,P_beta_p01_rho01_s25,fixed,32,25,32,800,32,32.0
+143,fixed,P_beta_p01_rho01_s25,fixed,40,25,40,1000,40,40.0
+144,fixed,P_beta_p01_rho01_s25,fixed,60,25,60,1500,60,60.0
+145,fixed,P_beta_p01_rho01_s25,fixed,100,25,100,2500,100,100.0
+146,fixed,P_beta_p001_rho01_s50,fixed,1,50,1,50,1,1.0
+147,fixed,P_beta_p001_rho01_s50,fixed,2,50,2,100,2,2.0
+148,fixed,P_beta_p001_rho01_s50,fixed,3,50,3,150,3,3.0
+149,fixed,P_beta_p001_rho01_s50,fixed,4,50,4,200,4,4.0
+150,fixed,P_beta_p001_rho01_s50,fixed,5,50,5,250,5,5.0
+151,fixed,P_beta_p001_rho01_s50,fixed,6,50,6,300,6,6.0
+152,fixed,P_beta_p001_rho01_s50,fixed,7,50,7,350,7,7.0
+153,fixed,P_beta_p001_rho01_s50,fixed,8,50,8,400,8,8.0
+154,fixed,P_beta_p001_rho01_s50,fixed,9,50,9,450,9,9.0
+155,fixed,P_beta_p001_rho01_s50,fixed,10,50,10,500,10,10.0
+156,fixed,P_beta_p001_rho01_s50,fixed,11,50,11,550,11,11.0
+157,fixed,P_beta_p001_rho01_s50,fixed,12,50,12,600,12,12.0
+158,fixed,P_beta_p001_rho01_s50,fixed,13,50,13,650,13,13.0
+159,fixed,P_beta_p001_rho01_s50,fixed,14,50,14,700,14,14.0
+160,fixed,P_beta_p001_rho01_s50,fixed,15,50,15,750,15,15.0
+161,fixed,P_beta_p001_rho01_s50,fixed,16,50,16,800,16,16.0
+162,fixed,P_beta_p001_rho01_s50,fixed,17,50,17,850,17,17.0
+163,fixed,P_beta_p001_rho01_s50,fixed,18,50,18,900,18,18.0
+164,fixed,P_beta_p001_rho01_s50,fixed,19,50,19,950,19,19.0
+165,fixed,P_beta_p001_rho01_s50,fixed,20,50,20,1000,20,20.0
+166,fixed,P_beta_p001_rho01_s50,fixed,21,50,21,1050,21,21.0
+167,fixed,P_beta_p001_rho01_s50,fixed,22,50,22,1100,22,22.0
+168,fixed,P_beta_p001_rho01_s50,fixed,23,50,23,1150,23,23.0
+169,fixed,P_beta_p001_rho01_s50,fixed,24,50,24,1200,24,24.0
+170,fixed,P_beta_p001_rho01_s50,fixed,28,50,28,1400,28,28.0
+171,fixed,P_beta_p001_rho01_s50,fixed,32,50,32,1600,32,32.0
+172,fixed,P_beta_p001_rho01_s50,fixed,40,50,40,2000,40,40.0
+173,fixed,P_beta_p001_rho01_s50,fixed,60,50,60,3000,60,60.0
+174,fixed,P_beta_p001_rho01_s50,fixed,100,50,100,5000,100,100.0
+175,pool_size,Q_uniform,fixed,1,1,1,1,1,1.0
+176,pool_size,Q_uniform,fixed,1,25,1,25,1,1.0
+177,pool_size,Q_uniform,fixed,1,1000,1,1000,1,1.0
+178,pool_size,Q_uniform,fixed,1,1000000,1,1000000,1,1.0
+179,pool_size,Q_uniform,fixed,1,1000000000000,1,1000000000000,1,1.0
+180,pool_size,Q_uniform,fixed,2,1,2,2,2,2.0
+181,pool_size,Q_uniform,fixed,2,25,2,50,2,2.0
+182,pool_size,Q_uniform,fixed,2,1000,2,2000,2,2.0
+183,pool_size,Q_uniform,fixed,2,1000000,2,2000000,2,2.0
+184,pool_size,Q_uniform,fixed,2,1000000000000,2,2000000000000,2,2.0
+185,pool_size,Q_uniform,fixed,3,1,3,3,3,3.0
+186,pool_size,Q_uniform,fixed,3,25,3,75,3,3.0
+187,pool_size,Q_uniform,fixed,3,1000,3,3000,3,3.0
+188,pool_size,Q_uniform,fixed,3,1000000,3,3000000,3,3.0
+189,pool_size,Q_uniform,fixed,3,1000000000000,3,3000000000000,3,3.0
+190,mixed_known,"[2, 3]x[1, 1]_lower",mixed,3,25,2,5,5,2.5
+191,mixed_known,"[2, 3]x[1, 1]_upper",mixed,3,25,2,5,5,2.5
+192,mixed_known,"[2, 3]x[2, 2]_lower",mixed,8,25,4,10,10,5.0
+193,mixed_known,"[2, 3]x[2, 2]_upper",mixed,8,25,4,10,10,5.0
+194,mixed_known,"[2, 3]x[3, 3]_lower",mixed,13,25,6,15,15,7.5
+195,mixed_known,"[2, 3]x[3, 3]_upper",mixed,13,25,6,15,15,7.5
+196,mixed_known,"[2, 3]x[4, 4]_lower",mixed,18,25,8,20,20,10.0
+197,mixed_known,"[2, 3]x[4, 4]_upper",mixed,18,25,8,20,20,10.0
+198,mixed_known,"[10, 40]x[1, 1]_lower",mixed,3,25,2,50,50,5.0
+199,mixed_known,"[10, 40]x[1, 1]_upper",mixed,3,25,2,50,50,5.0
+200,mixed_known,"[10, 40]x[2, 2]_lower",mixed,8,25,4,100,100,10.0
+201,mixed_known,"[10, 40]x[2, 2]_upper",mixed,8,25,4,100,100,10.0
+202,mixed_known,"[10, 40]x[3, 3]_lower",mixed,15,25,6,150,150,15.0
+203,mixed_known,"[10, 40]x[3, 3]_upper",mixed,15,25,6,150,150,15.0
+204,mixed_known,"[10, 40]x[4, 4]_lower",mixed,20,25,8,200,200,20.0
+205,mixed_known,"[10, 40]x[4, 4]_upper",mixed,20,25,8,200,200,20.0
+206,mixed_known,"[25, 26]x[1, 1]_lower",mixed,3,25,2,51,51,2.04
+207,mixed_known,"[25, 26]x[1, 1]_upper",mixed,3,25,2,51,51,2.04
+208,mixed_known,"[25, 26]x[2, 2]_lower",mixed,8,25,4,102,102,4.08
+209,mixed_known,"[25, 26]x[2, 2]_upper",mixed,8,25,4,102,102,4.08
+210,mixed_known,"[25, 26]x[3, 3]_lower",mixed,15,25,6,153,153,6.12
+211,mixed_known,"[25, 26]x[3, 3]_upper",mixed,15,25,6,153,153,6.12
+212,mixed_known,"[25, 26]x[4, 4]_lower",mixed,24,25,8,204,204,8.16
+213,mixed_known,"[25, 26]x[4, 4]_upper",mixed,24,25,8,204,204,8.16
+214,mixed_known,"[2, 101]x[1, 1]_lower",mixed,3,25,2,103,103,51.5
+215,mixed_known,"[2, 101]x[1, 1]_upper",mixed,3,25,2,103,103,51.5
+216,mixed_known,"[100, 101]x[1, 1]_lower",mixed,3,25,2,201,201,2.01
+217,mixed_known,"[100, 101]x[1, 1]_upper",mixed,3,25,2,201,201,2.01
+218,mixed_known,"[2, 3, 7]x[1, 1, 1]_lower",mixed,7,25,3,12,12,6.0
+219,mixed_known,"[2, 3, 7]x[1, 1, 1]_upper",mixed,7,25,3,12,12,6.0
+220,mixed_known,"[2, 3, 7, 15]x[1, 1, 1, 1]_lower",mixed,15,25,4,27,27,13.5
+221,mixed_known,"[2, 3, 7, 15]x[1, 1, 1, 1]_upper",mixed,15,25,4,27,27,13.5
+222,mixed_known,"[2, 4, 8, 16, 32]x[1, 1, 1, 1, 1]_lower",mixed,31,25,5,62,62,31.0
+223,mixed_known,"[2, 4, 8, 16, 32]x[1, 1, 1, 1, 1]_upper",mixed,31,25,5,62,62,31.0
+224,scaled_orders,scale_1,mixed,3,25,2,5,5,2.5
+225,scaled_orders,scale_10,mixed,3,25,2,50,50,2.5
+226,scaled_orders,scale_100,mixed,3,25,2,500,500,2.5
+227,scaled_orders,scale_1000,mixed,3,25,2,5000,5000,2.5
+228,scaled_orders,scale_1000000,mixed,3,25,2,5000000,5000000,2.5
+229,mixed_beta,"[10, 40]x[1, 1]",mixed,3,25,2,50,50,5.0
+230,mixed_beta,"[10, 40]x[2, 2]",mixed,8,25,4,100,100,10.0
+231,mixed_beta,"[25, 26]x[1, 1]",mixed,3,25,2,51,51,2.04
+232,mixed_beta,"[25, 26]x[2, 2]",mixed,8,25,4,102,102,4.08
+233,mixed_beta,"[2, 3]x[3, 3]",mixed,13,25,6,15,15,7.5

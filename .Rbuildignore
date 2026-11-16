@@ -3,3 +3,5 @@
 ^DESIGN\.md$
 ^LICENSE\.md$
 ^\.gitignore$
+^benchmarks$
+^NUMERICAL-ROBUSTNESS\.md$

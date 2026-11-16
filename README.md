@@ -6,6 +6,12 @@ Compute the two principal representations of probability distributions on a
 known compact interval, given raw moments `m1, ..., mv` (`m0 = 1` is implicit).
 The package has no runtime dependencies beyond R.
 
+**Numerical status:** stress tests have identified silent failures in version
+0.2.0, including false boundary classifications for longer moment sequences
+and inaccurate mixed-power results at low dimension. See the
+[numerical assessment and proposed improvements](NUMERICAL-ROBUSTNESS.md)
+for measured limits, reproducible examples, and the implementation plan.
+
 ```r
 # install.packages("pak")
 pak::pak("AngusMcLure/principalMoments")

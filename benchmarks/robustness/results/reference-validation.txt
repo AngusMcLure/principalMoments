@@ -1,0 +1,4 @@
+Recomputed all 381 reference rows at 160 decimal digits.
+Maximum value difference: 2.9277677939033728951e-75
+Maximum node/weight difference: 1.7111051448262544389e-72
+All rounded-to-double reference functional values identical: True

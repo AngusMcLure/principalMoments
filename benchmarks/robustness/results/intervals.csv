@@ -1,0 +1,17 @@
+"a","v","status","boundary"
+0,2,"returned",FALSE
+0,4,"returned",FALSE
+0,8,"returned",FALSE
+0,12,"returned",FALSE
+10,2,"returned",FALSE
+10,4,"returned",FALSE
+10,8,"returned",FALSE
+10,12,"Infeasible moments on the specified support (negative localising eigenvalue).",NA
+1000,2,"returned",FALSE
+1000,4,"returned",FALSE
+1000,8,"Infeasible moments on the specified support (negative localising eigenvalue).",NA
+1000,12,"Infeasible moments on the specified support (negative localising eigenvalue).",NA
+1e+06,2,"returned",FALSE
+1e+06,4,"Infeasible moments on the specified support (negative localising eigenvalue).",NA
+1e+06,8,"Infeasible moments on the specified support (negative localising eigenvalue).",NA
+1e+06,12,"Infeasible moments on the specified support (negative localising eigenvalue).",NA
