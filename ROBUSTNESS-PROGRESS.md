@@ -54,10 +54,11 @@ The fixtures are plain CSV, so CI does not depend on Python or SciPy.
 | Known lower rule, orders 2,101,103 | Prevalence error 0.0218 | Recovered from the high-precision fixture |
 | Known lower rule, orders 100,101,201 | Severe small-moment acceptance error | Recovered from preserved high-precision input |
 
-For the numerical uniform sweeps on the assessment machine, 50 moments took
-about 46 seconds and 100 took about 186 seconds. Working precisions were 528
-and 928 bits, respectively, with 512-bit MPFR input. These timings are examples,
-not performance promises. High precision is materially more expensive than the
+Initial recurrence benchmarks on the assessment machine took about 46 seconds
+for 50 moments and 186 seconds for 100 moments, at working precisions of 528
+and 928 bits with 512-bit input. The final initializer honours supplied precision
+and reserves room for a second calculation: that input now starts at 512 bits
+and refines at 1024 bits. Timings are illustrative, not performance promises. High precision is materially more expensive than the
 old double path. The difficult high-power cases use an explicit `maxit=300` budget.
 The 100-moment and high-power cases are in the separate manual
 stress workflow; the normal matrix includes the 50-moment and former-failure

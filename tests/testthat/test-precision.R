@@ -125,3 +125,10 @@ test_that("power transformations automatically preserve otherwise lost nodes", {
   expect_gt(value[1], 0)
   expect_equal(unname(value[1]), log(2) / 1e20, tolerance = 1e-10)
 })
+
+test_that("working precision honours the supplied input before refinement", {
+  m <- 1 / Rmpfr::mpfr(2:5, 512)
+  reps <- principal_representations(m)
+  expect_gte(reps$diagnostics$working_precision, 512)
+  expect_equal(reps$diagnostics$input_precision, 512L)
+})

@@ -169,9 +169,24 @@ precision_representations <- function(moments, orders, tol, precision, accuracy,
     !is.finite(precision) || precision < 80 || precision != floor(precision) || precision > max_precision)) {
     stop("Invalid precision.", call. = FALSE)
   }
-  bits <- if (is.null(precision)) max(128L, 4L * length(orders) + 64L) else precision
-  bits <- min(bits, max_precision)
   input_bits <- if (is_mp(moments)) min(Rmpfr::getPrec(moments)) else if (numeric_input) 53L else NA_integer_
+  supplied_bits <- if (is_mp(moments)) {
+    input_bits
+  } else if (is.character(moments)) {
+    digits <- nchar(gsub("[^0-9]", "", sub("[eE].*$", "", moments)))
+    ceiling(max(digits) * log2(10))
+  } else {
+    53L
+  }
+  bits <- if (is.null(precision)) {
+    # Avoid needlessly rounding accurate input down to a precision at which
+    # its nearly-boundary moment vector may appear infeasible. Reserve room
+    # for the independent refinement calculation.
+    max(80L, min(floor(max_precision / 2L), max(128L, 4L * length(orders) + 64L, supplied_bits)))
+  } else {
+    precision
+  }
+  bits <- min(bits, max_precision)
   previous <- NULL
   warm <- if (!consecutive) {
     tryCatch(suppressWarnings(generalised_double(
