@@ -4,13 +4,13 @@
 
 Compute the two principal representations of probability distributions on a
 known compact interval, given raw moments `m1, ..., mv` (`m0 = 1` is implicit).
-The package has no runtime dependencies beyond R.
+The precision backend uses Rmpfr (and its GMP/MPFR libraries).
 
-**Numerical status:** stress tests have identified silent failures in version
-0.2.0, including false boundary classifications for longer moment sequences
-and inaccurate mixed-power results at low dimension. See the
-[numerical assessment and proposed improvements](NUMERICAL-ROBUSTNESS.md)
-for measured limits, reproducible examples, and the implementation plan.
+**Numerical status:** version 0.3.0 adds fail-safe rank handling and a
+precision-refined MPFR backend. It recovers the 17-moment failure and has been
+checked through 100 uniform moments with accurate inputs. This is not a universal
+capacity guarantee. See [the progress report](ROBUSTNESS-PROGRESS.md) and the
+[original 0.2.0 assessment](NUMERICAL-ROBUSTNESS.md) for evidence and limitations.
 
 ```r
 # install.packages("pak")
@@ -65,8 +65,8 @@ modified measures produce the endpoint-constrained rules. Boundary recovery
 uses a null polynomial from a singular localising matrix. Every output must
 reproduce **all** normalised supplied moments within `tol`.
 
-This is a double-precision implementation intended for low to moderate moment
-orders. Raw moment matrices become ill-conditioned at high orders and near
+The numeric-input fast path is intended for low to moderate moment orders;
+use preserved-precision input for the MPFR backend. Raw moment matrices become ill-conditioned at high orders and near
 boundary sequences. Diagnostic residuals are backward checks, not guarantees
 of accurate nodes or bounds. Numerical rank depends on `tol`. Try nearby
 tolerances, inspect warnings, and use higher precision or a better moment basis
@@ -122,11 +122,51 @@ the ordinary derivative-sign `functional_bounds()` deliberately rejects these
 objects. Arbitrary integrands can still be evaluated, without claiming bounds.
 
 Equally spaced exponents reduce to ordinary moments by a power transformation.
-Other exponents require nonlinear quadrature equations, solved using analytic
-Jacobians, damped Newton steps, bounded parameters and deterministic restarts.
+Other exponents use MPFR Newton corrections with ordered positive support,
+continuation, and precision-refined checks. Legacy double fits supply warm
+starts only.
 Both output measures must reproduce every constraint. Recognisable point-mass
 and endpoint-mixture boundaries are recovered directly. Nonconvergence is
 reported explicitly; it does not prove the input infeasible. This API covers
 selected monomials, not arbitrary constraint functions or unbounded support.
 It is intended for low to moderate dimensions; near boundaries, high or closely
 spaced powers can be ill-conditioned. Check residuals and tolerance sensitivity.
+
+
+## Preserving precision for longer sequences
+
+```r
+# Construct the moments accurately, rather than rounding first:
+m <- 1 / Rmpfr::mpfr(2:51, 512)
+r <- principal_representations(m)
+r$diagnostics
+functional_bounds(r, function(q) -expm1(log1p(-q) / 25),
+                  derivative = "positive")
+
+# Decimal strings are also accepted without an intermediate double conversion.
+r <- generalised_principal_representations(
+  c("0.9321971323", "0.8546368326", "0.8403270527"), c(10, 40, 50)
+)
+```
+
+The short decimal example is interpreted as those supplied values, not the
+unrounded analytical beta moments. Use enough digits for the desired problem.
+Plain numeric input retains its 53-bit information content. Asking for higher
+working precision cannot recreate digits lost in input rounding. Highly
+ill-conditioned double input is rejected instead of silently losing moments.
+
+`precision` selects an initial bit count, `max_precision` limits refinement,
+`accuracy` controls node/weight and functional stability checks, and `tol` controls
+absolute reproduction error. The MPFR path also checks relative moment errors.
+The returned tables are convenient double-precision views; `high_precision`
+retains MPFR nodes and weights, and the evaluator uses those values and compares
+the functional across successive precision levels. User functions must support
+MPFR arguments; do not coerce them to doubles inside an endpoint-sensitive
+functional. Some R functions only accept ordinary numeric arguments.
+
+Recognised boundary data may be labelled `boundary_at_input_precision`.
+An inferred `numerical_boundary` is not enough to claim sharp bounds: the
+bounds functions reject that status. General unrecognised singular cases can
+remain unresolved. These checks are numerical, not interval-arithmetic or
+input-uncertainty certificates. Use the manually triggered **Numerical stress
+checks** workflow to run the longer 100-moment and high-power regressions.

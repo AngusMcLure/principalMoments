@@ -78,7 +78,7 @@ boundary distributions and invalid inputs. Cross-platform CI runs the installed
 package checks and vignette. Analytic fixtures provide an independent oracle
 without requiring Python. No claim of formal numerical certification is made.
 
-## Next numerical work
+## Original numerical roadmap (version 0.1.0)
 
 1. Modified-moment / orthogonal-basis input to reduce raw Hankel conditioning.
 2. Canonical-moment or modified-Chebyshev recurrence backend (compare QuadMomPy's
@@ -88,7 +88,7 @@ without requiring Python. No claim of formal numerical certification is made.
    statistical operation, never hidden inside the exact-moment API.
 5. General integrand optimisation via polynomial envelopes as a separate API.
 
-These extensions are not implemented in version 0.1.0.
+These extensions were not implemented in version 0.1.0; see the 0.3.0 changes below.
 
 ## Selected-monomial extension
 
@@ -101,7 +101,7 @@ Otherwise the number of unknown weights and unfixed nodes is d+1, matching
 the normalisation plus d supplied constraints. Fixed endpoints follow the
 principal patterns in the table, independently of the largest power.
 
-The nonlinear backend uses analytic Jacobians, SVD damped Newton directions,
+The version-0.2.0 nonlinear backend used analytic Jacobians, SVD damped Newton directions,
 box-constrained backtracking and five deterministic initial node configurations.
 Residuals are scaled by max(target moment, 1e-4) during optimisation; final
 acceptance uses the absolute user tolerance on all moments including mass.
@@ -119,3 +119,37 @@ X=1-P and all pool sizes greater than one, t=1 recovers precisely the parity
 rule in the theory's mixed-pool theorem. Equal pool size s corresponds to
 orders s,2s,...,vs and Q=1-X^s. Reflection swaps the principal labels when v is
 even; bounds are compared after reversing E(X) to prevalence 1-E(X).
+
+
+## Version 0.3.0 precision backend
+
+Rmpfr is a runtime dependency. Decimal strings and MPFR vectors bypass double
+conversion. Consecutive moments generate an orthogonal-polynomial Stieltjes
+recurrence at working precision, then symmetric-Jacobi eigenvalues provide
+initial guesses only: MPFR Newton refinement computes the actual nodes, and
+Christoffel sums compute their weights. Radau/Lobatto rules still use modified
+measures. Moment inner products still involve raw polynomial coefficients;
+arbitrary precision, not a claim of perfect raw-moment conditioning, controls
+cancellation. Direct modified-moment/count-probability input is future work.
+
+Selected powers use an ordered positive MPFR Newton solve. An existing double
+fit can supply initial guesses but cannot be returned without correction.
+When necessary, continuation first moves consecutive exponents to the selected
+exponents under a uniform measure, then approaches the supplied moment vector
+through convex combinations with geometrically decreasing uniform weight.
+Both relative residuals and Newton corrections control convergence. A bounded
+work budget prevents unlimited continuation retries.
+
+A second working-precision calculation must reproduce the nodes and weights to
+`accuracy/10`. The final all-moment check enforces both absolute `tol` and relative
+`accuracy/100`. Numeric inputs additionally have a local inverse-Jacobian
+one-ulp sensitivity estimate; this rejects unsupported forward accuracy but is
+not a rigorous uncertainty enclosure. Sharp-bound functions reject ambiguous
+`numerical_boundary` status. Recognised point masses/endpoint mixtures have
+analytic paths. Other singular precision-input cases may remain unresolved.
+
+The object retains the two precision levels as `high_precision` and
+`precision_reference`. Evaluation uses these values and checks the requested
+functional separately, because endpoint-singular functions can be unstable
+even with small node changes. Public tables are double-precision displays.
+No global dual-envelope certification or interval arithmetic is implemented.

@@ -4,13 +4,31 @@ prevalence_integrand <- function(q, s) -expm1(log1p(-q) / s)
 
 expect_prevalence_bounds <- function(reps, lower, upper) {
   for (s in c(1, 2, 5, 25, 100)) {
-    expected <- c(sum(lower$weights * prevalence_integrand(lower$nodes, s)),
-                  sum(upper$weights * prevalence_integrand(upper$nodes, s)))
-    actual <- functional_bounds(reps, prevalence_integrand, s = s,
-                                derivative = "positive")
-    expect_equal(unname(actual), expected, tolerance = 1e-8,
-                 info = paste("moments", paste(reps$moments, collapse = ","),
-                              "pool size", s))
+    expected <- c(
+      sum(lower$weights * prevalence_integrand(lower$nodes, s)),
+      sum(upper$weights * prevalence_integrand(upper$nodes, s))
+    )
+    if (identical(reps$diagnostics$status, "numerical_boundary")) {
+      # Rounded flat sequences determine an approximate boundary rule, but
+      # must not be advertised as exact sharp bounds without resolving rank.
+      expect_error(functional_bounds(reps, prevalence_integrand,
+        s = s,
+        derivative = "positive"
+      ), "Unresolved boundary")
+      actual <- evaluate_representations(reps, prevalence_integrand, s = s)
+    } else {
+      actual <- functional_bounds(reps, prevalence_integrand,
+        s = s,
+        derivative = "positive"
+      )
+    }
+    expect_equal(unname(actual), expected,
+      tolerance = 1e-8,
+      info = paste(
+        "moments", paste(reps$moments, collapse = ","),
+        "pool size", s
+      )
+    )
   }
 }
 
@@ -22,8 +40,10 @@ expect_closed_rule <- function(actual, nodes, weights) {
 test_that("one-moment prevalence bounds hold across rare and common positives", {
   for (m1 in c(1e-8, 1e-4, 0.01, 0.15, 0.5, 0.85, 0.99, 1 - 1e-4, 1 - 1e-8)) {
     reps <- principal_representations(m1)
-    expect_prevalence_bounds(reps, list(nodes = m1, weights = 1),
-                            list(nodes = c(0, 1), weights = c(1 - m1, m1)))
+    expect_prevalence_bounds(
+      reps, list(nodes = m1, weights = 1),
+      list(nodes = c(0, 1), weights = c(1 - m1, m1))
+    )
   }
 })
 
@@ -34,8 +54,10 @@ test_that("two-moment closed forms hold throughout the feasible moment region", 
     for (fraction in c(0.001, 0.05, 0.5, 0.95, 0.999)) {
       m2 <- m1^2 + fraction * m1 * (1 - m1)
       if ((m1 < 1e-6 || m1 > 1 - 1e-6) && fraction <= 0.05) {
-        expect_warning(reps <- principal_representations(c(m1, m2)),
-                       "poorly conditioned")
+        expect_warning(
+          reps <- principal_representations(c(m1, m2)),
+          "poorly conditioned"
+        )
         expect_lt(reps$diagnostics$min_eigenvalue_ratio, 1e-9)
       } else {
         reps <- principal_representations(c(m1, m2))
@@ -43,8 +65,10 @@ test_that("two-moment closed forms hold throughout the feasible moment region", 
       b <- m2 / m1
       a <- (m1 - m2) / (1 - m1)
       lower <- list(nodes = c(0, b), weights = c(1 - m1 / b, m1 / b))
-      upper <- list(nodes = c(a, 1),
-                    weights = c((1 - m1) / (1 - a), (m1 - a) / (1 - a)))
+      upper <- list(
+        nodes = c(a, 1),
+        weights = c((1 - m1) / (1 - a), (m1 - a) / (1 - a))
+      )
       expect_false(reps$boundary)
       expect_closed_rule(reps$lower, lower$nodes, lower$weights)
       expect_closed_rule(reps$upper, upper$nodes, upper$weights)
@@ -100,8 +124,10 @@ test_that("three-moment closed forms hold for asymmetric interior moment sequenc
         w_c <- (m1 - m2) / (c_node * (1 - c_node))
         w_right <- m1 - c_node * w_c
         lower <- list(nodes = x, weights = w)
-        upper <- list(nodes = c(0, c_node, 1),
-                      weights = c(1 - w_c - w_right, w_c, w_right))
+        upper <- list(
+          nodes = c(0, c_node, 1),
+          weights = c(1 - w_c - w_right, w_c, w_right)
+        )
         expect_false(reps$boundary)
         expect_closed_rule(reps$lower, lower$nodes, lower$weights)
         expect_closed_rule(reps$upper, upper$nodes, upper$weights)
@@ -118,11 +144,15 @@ test_that("third-moment endpoints recover their unique two-atom measures", {
       b <- m2 / m1
       a <- (m1 - m2) / (1 - m1)
       cases <- list(
-        list(m3 = m2^2 / m1,
-             nodes = c(0, b), weights = c(1 - m1 / b, m1 / b)),
-        list(m3 = m2 - (m1 - m2)^2 / (1 - m1),
-             nodes = c(a, 1),
-             weights = c((1 - m1) / (1 - a), (m1 - a) / (1 - a)))
+        list(
+          m3 = m2^2 / m1,
+          nodes = c(0, b), weights = c(1 - m1 / b, m1 / b)
+        ),
+        list(
+          m3 = m2 - (m1 - m2)^2 / (1 - m1),
+          nodes = c(a, 1),
+          weights = c((1 - m1) / (1 - a), (m1 - a) / (1 - a))
+        )
       )
       for (case in cases) {
         reps <- principal_representations(c(m1, m2, case$m3))

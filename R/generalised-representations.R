@@ -1,41 +1,17 @@
-#' Principal representations for selected power moments
-#'
-#' @param moments Numeric vector of `E(X^orders[i])`; zeroth moment is implicit.
-#' @param orders Strictly increasing positive finite real exponents.
-#' @param tol Absolute moment reproduction tolerance.
-#' @param maxit Maximum iterations per nonlinear solve.
-#' @return A `generalised_principal_representations` object inheriting from
-#'   `principal_representations`, usable by [evaluate_representations()].
-#' @details Support is `[0,1]`. This supports selected monomials, not arbitrary
-#'   constraint functions. Principal support patterns depend on the number of
-#'   constraints, not the largest exponent. Equally spaced orders are reduced
-#'   exactly by `Y = X^orders[1]` to the consecutive-moment solver. Otherwise a
-#'   deterministic multistart damped Newton method solves the prescribed support
-#'   equations with analytic Jacobians and box constraints. Zero weights and
-#'   endpoint nodes allow boundary measures. Both rules must reproduce every
-#'   constraint. Failure to converge is not a proof of infeasibility. No missing
-#'   moments are filled in and no discretised grid is used.
-#'
-#'   This is a double-precision numerical solver for low to moderate dimension.
-#'   Near-boundary, large or closely spaced orders can be ill-conditioned.
-#'   Residuals certify numerical reproduction only, not forward accuracy or
-#'   exact boundary membership. `boundary` is inferred from coincident rules.
-#' @export
-#' @examples
-#' # Uniform(0,1), with the mixed-pool design {0,2,3,5}
-#' reps <- generalised_principal_representations(1 / c(3, 4, 6), c(2, 3, 5))
-#' power_moment_bounds(reps, 1)
-generalised_principal_representations <- function(moments, orders,
-                                                 tol = 1e-9, maxit = 300L) {
-  valid <- function(x) is.numeric(x) && !is.complex(x) &&
-    is.null(dim(x)) && length(x) > 0L && all(is.finite(x))
+generalised_double <- function(moments, orders,
+                               tol = 1e-9, maxit = 300L) {
+  valid <- function(x) {
+    is.numeric(x) && !is.complex(x) &&
+      is.null(dim(x)) && length(x) > 0L && all(is.finite(x))
+  }
   if (!valid(moments) || !valid(orders) || length(moments) != length(orders) ||
-      any(orders <= 0) || any(diff(orders) <= 0)) {
+    any(orders <= 0) || any(diff(orders) <= 0)) {
     stop("Supply finite moments and equally long, strictly increasing positive orders.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
   if (!valid(tol) || length(tol) != 1L || tol <= 0 || tol >= 1 ||
-      !valid(maxit) || length(maxit) != 1L || maxit < 1 || maxit != floor(maxit)) {
+    !valid(maxit) || length(maxit) != 1L || maxit < 1 || maxit != floor(maxit)) {
     stop("Invalid `tol` or `maxit`.", call. = FALSE)
   }
   if (any(moments < 0 | moments > 1) || any(diff(moments) > tol)) {
@@ -47,7 +23,9 @@ generalised_principal_representations <- function(moments, orders,
   is_point <- d >= 2L && all(abs(moments - predicted) <=
     16 * .Machine$double.eps * pmax(abs(moments), abs(predicted), 1e-300))
   if (all(moments == moments[1]) || is_point) {
-    rule <- if (is_point) data.frame(nodes = point, weights = 1) else {
+    rule <- if (is_point) {
+      data.frame(nodes = point, weights = 1)
+    } else {
       data.frame(nodes = c(0, 1), weights = c(1 - moments[1], moments[1]))
     }
     # One constraint alone identifies a unique measure only at endpoints.
@@ -57,8 +35,10 @@ generalised_principal_representations <- function(moments, orders,
     } else {
       rule <- rule[rule$weights > 0, , drop = FALSE]
       rownames(rule) <- NULL
-      result <- list(lower = rule, upper = rule, moments = moments,
-                     support = c(0, 1), order = d, boundary = TRUE)
+      result <- list(
+        lower = rule, upper = rule, moments = moments,
+        support = c(0, 1), order = d, boundary = TRUE
+      )
     }
   } else if (all(orders / orders[1] == seq_len(d))) {
     result <- principal_representations(moments, tol = tol)
@@ -72,18 +52,25 @@ generalised_principal_representations <- function(moments, orders,
     upper <- selected_power_rule(target, exponents, TRUE, tol, maxit)
     lower$nodes <- lower$nodes^(1 / orders[1])
     upper$nodes <- upper$nodes^(1 / orders[1])
-    result <- list(lower = lower, upper = upper, moments = moments,
-                   support = c(0, 1), order = d, boundary = FALSE)
+    result <- list(
+      lower = lower, upper = upper, moments = moments,
+      support = c(0, 1), order = d, boundary = FALSE
+    )
   }
-  residual <- function(rule) max(abs(drop(outer(c(0, orders), rule$nodes,
-                                               function(k, x) x^k) %*%
-                                          rule$weights) - c(1, moments)))
+  residual <- function(rule) {
+    max(abs(drop(outer(
+      c(0, orders), rule$nodes,
+      function(k, x) x^k
+    ) %*%
+      rule$weights) - c(1, moments)))
+  }
   errors <- c(lower = residual(result$lower), upper = residual(result$upper))
   if (any(errors > tol)) stop("Power moment reproduction failed.", call. = FALSE)
   result$orders <- orders
   result$diagnostics$residuals <- errors
   result$boundary <- isTRUE(all.equal(result$lower, result$upper,
-                                      tolerance = tol * 10))
+    tolerance = tol * 10
+  ))
   class(result) <- c("generalised_principal_representations", "principal_representations")
   result
 }
@@ -91,7 +78,9 @@ generalised_principal_representations <- function(moments, orders,
 selected_power_rule <- function(target, exponents, upper, tol, maxit) {
   d <- length(exponents) - 1L
   r <- if (d %% 2L) (d + 1L) / 2L - as.integer(upper) else d / 2L
-  ends <- if (d %% 2L) { if (upper) c(0, 1) else numeric() } else {
+  ends <- if (d %% 2L) {
+    if (upper) c(0, 1) else numeric()
+  } else {
     if (upper) 1 else 0
   }
   n <- r + length(ends)
@@ -145,9 +134,13 @@ selected_power_rule <- function(target, exponents, upper, tol, maxit) {
       }
     }
   }
-  stop(paste("Generalised quadrature did not converge at `tol`; moments may be",
-             "infeasible or ill-conditioned. Try rescaling orders or increasing maxit."),
-       call. = FALSE)
+  stop(
+    paste(
+      "Generalised quadrature did not converge at `tol`; moments may be",
+      "infeasible or ill-conditioned. Try rescaling orders or increasing maxit."
+    ),
+    call. = FALSE
+  )
 }
 
 #' Sharp bounds for another power moment
@@ -162,9 +155,12 @@ selected_power_rule <- function(target, exponents, upper, tol, maxit) {
 #' @export
 power_moment_bounds <- function(representations, exponent) {
   if (!inherits(representations, "generalised_principal_representations") ||
-      !is.numeric(exponent) || is.complex(exponent) || length(exponent) != 1L ||
-      !is.finite(exponent) || exponent <= 0) {
+    !is.numeric(exponent) || is.complex(exponent) || length(exponent) != 1L ||
+    !is.finite(exponent) || exponent <= 0) {
     stop("Supply generalised representations and a positive finite exponent.", call. = FALSE)
+  }
+  if (identical(representations$diagnostics$status, "numerical_boundary")) {
+    stop("Unresolved boundary membership: cannot claim sharp bounds at input precision.", call. = FALSE)
   }
   values <- evaluate_representations(representations, function(x) x^exponent)
   if (sum(representations$orders > exponent) %% 2L) values <- rev(values)

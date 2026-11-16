@@ -5,3 +5,4 @@
 ^\.gitignore$
 ^benchmarks$
 ^NUMERICAL-ROBUSTNESS\.md$
+^ROBUSTNESS-PROGRESS\.md$

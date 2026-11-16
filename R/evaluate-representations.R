@@ -22,23 +22,40 @@ evaluate_representations <- function(representations, fun, ...,
     stop("`representations` must come from principal_representations().", call. = FALSE)
   }
   if (!is.function(fun)) stop("`fun` must be a function.", call. = FALSE)
-  vapply(representations[c("lower", "upper")], function(rule) {
+  rules <- if (is.null(representations$high_precision)) {
+    representations[c("lower", "upper")]
+  } else {
+    requireNamespace("Rmpfr", quietly = TRUE)
+    representations$high_precision
+  }
+  evaluate_rule <- function(rule) {
     if (type == "integrand") {
       values <- fun(rule$nodes, ...)
-      if (!is.numeric(values) || length(values) != nrow(rule) ||
-          any(!is.finite(values))) {
+      if ((!is.numeric(values) && !is_mp(values)) || length(values) != length(rule$nodes) ||
+        any(!is.finite(values))) {
         stop("The integrand must return one finite numeric value per node.", call. = FALSE)
       }
-      sum(rule$weights * values)
+      mp_num(sum(rule$weights * values))
     } else {
       value <- fun(rule$nodes, rule$weights, ...)
-      if (!is.numeric(value) || length(value) != 1L || !is.finite(value)) {
+      if ((!is.numeric(value) && !is_mp(value)) || length(value) != 1L || !is.finite(value)) {
         stop("The distribution functional must return one finite numeric value.",
-             call. = FALSE)
+          call. = FALSE
+        )
       }
-      value
+      mp_num(value)
     }
-  }, numeric(1))
+  }
+  values <- vapply(rules, evaluate_rule, numeric(1))
+  if (!is.null(representations$precision_reference)) {
+    previous <- vapply(representations$precision_reference, evaluate_rule, numeric(1))
+    if (any(abs(previous - values) > representations$diagnostics$accuracy)) {
+      stop("Functional evaluation is unresolved across precision refinement; increase precision.",
+        call. = FALSE
+      )
+    }
+  }
+  values
 }
 
 #' Sharp bounds under an asserted derivative-sign condition
@@ -61,9 +78,13 @@ evaluate_representations <- function(representations, fun, ...,
 #' functional_bounds(reps, exp, derivative = "positive")
 functional_bounds <- function(representations, fun, ...,
                               derivative = c("positive", "negative")) {
+  if (identical(representations$diagnostics$status, "numerical_boundary")) {
+    stop("Unresolved boundary membership: cannot claim sharp bounds at input precision.", call. = FALSE)
+  }
   if (inherits(representations, "generalised_principal_representations")) {
     stop("Use power_moment_bounds() for selected powers; the ordinary derivative rule does not apply.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
   if (missing(derivative)) {
     stop("Explicitly assert the derivative sign using `derivative`.", call. = FALSE)

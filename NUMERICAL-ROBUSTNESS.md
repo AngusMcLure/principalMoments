@@ -4,6 +4,10 @@ Assessed version: **0.2.0, commit bd3fadc**. No package algorithms were changed
 for this assessment. Results below are empirical limits on specific fixtures,
 not universal limits or guarantees for other moment vectors.
 
+Version 0.3.0 addresses several of these failures; see the
+[implementation progress report](ROBUSTNESS-PROGRESS.md). The results below
+remain the preserved baseline for version 0.2.0.
+
 ## Findings
 
 The current implementation is not reliable for large moment sequences, and

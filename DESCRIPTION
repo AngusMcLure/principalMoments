@@ -1,6 +1,6 @@
 Package: principalMoments
 Title: Principal Representations of Truncated Moment Sequences
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: person("Angus", "McLure", email = "angus.mclure@anu.edu.au",
     role = c("aut", "cre"))
 Description: Computes lower and upper principal representations of probability
@@ -15,6 +15,9 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: R (>= 4.1.0)
+Imports:
+    methods,
+    Rmpfr (>= 0.9-0)
 Suggests:
     knitr,
     rmarkdown,
